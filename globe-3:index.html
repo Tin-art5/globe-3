@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Youth Climate Leaders Globe</title>
+<style>
+  body { margin: 0; font-family: Arial, sans-serif; overflow: hidden; }
+  #globe { width: 100vw; height: 100vh; background: #000; }
+  #info {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 360px;
+    max-height: 90vh;
+    background: rgba(245,245,245,0.95);
+    padding: 20px;
+    border-radius: 10px;
+    overflow-y: auto;
+    box-shadow: 0 0 15px rgba(0,0,0,0.3);
+    z-index: 10;
+  }
+  #info h2 { margin-top: 0; font-size: 18px; color: #003d73; }
+  .flag { width:50px; display:block; margin-bottom:10px; border:1px solid #ccc; }
+  .name { font-size: 18px; font-weight:bold; color:#003d73; margin-bottom:5px; }
+  .person-text { font-size: 14px; line-height:1.4; margin-top:10px; }
+  .country { font-weight: bold; color: #003d73; margin-bottom: 5px; }
+</style>
+</head>
+<body>
+
+<div id="globe"></div>
+
+<div id="info">
+  <h2>Click a hotspot to see information</h2>
+  <div id="infoText">The info for each location will appear here when you click a hotspot.</div>
+</div>
+
+<!-- External libraries -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r155/three.min.js"></script>
+<script src="https://unpkg.com/globe.gl"></script>
+
+<script>
+const hotspots = [
+  { lat:46.8625, lng:103.8467, name:"Bayarmaa Chuluunbat", country:"Mongolia", text:["Wildlife ecologist working with Mongolian herding communities to promote safe coexistence between people and wildlife 🐾"], flag:"https://flagcdn.com/w40/mn.png" },
+  { lat:-9.19, lng:-75.0152, name:"Cristopher Vargas", country:"Peru", text:["Voice actor and dubbing director dedicated to preserving the Quechua language through media and storytelling 📖"], flag:"https://flagcdn.com/w40/pe.png" },
+  { lat:26.8206, lng:30.8025, name:"Dana Ahmed", country:"Egypt", text:["Marine law researcher and educator advocating for ocean protection using law, art, and education 🌊"], flag:"https://flagcdn.com/w40/eg.png" },
+  { lat:32.7157, lng:-117.1611, name:"Danielle Boyer", country:"USA", text:["Robotics designer using technology to support and revitalize Indigenous cultures 🤖"], flag:"https://flagcdn.com/w40/us.png" },
+  { lat:3.848, lng:11.5021, name:"Jabi Katy Chale", country:"Cameroon", text:["Journalist and cultural ecology researcher raising awareness about environmental and community issues 📝"], flag:"https://flagcdn.com/w40/cm.png" },
+  { lat:24.7136, lng:46.6753, name:"Lana Alabbasi", country:"Saudi Arabia", text:["Astrophysics researcher who founded her country’s first mentorship program for young space enthusiasts 🔭"], flag:"https://flagcdn.com/w40/sa.png" },
+  { lat:39.3999, lng:-8.2245, name:"Marta Bernardino", country:"Portugal", text:["Conservation roboticist combining engineering and ecology to address environmental challenges ⚙️"], flag:"https://flagcdn.com/w40/pt.png" },
+  { lat:4.2105, lng:101.9758, name:"Max Han Kai Ding", country:"Malaysia", text:["Climate justice advocate mobilizing youth to take action against climate change 🌱"], flag:"https://flagcdn.com/w40/my.png" },
+  { lat:12.1696, lng:-68.9900, name:"Muskaan Khemani", country:"Curaçao", text:["Earth science researcher helping Caribbean communities adapt to climate impacts 🐚"], flag:"https://flagcdn.com/w40/cw.png" },
+  { lat:19.4326, lng:-99.1332, name:"Nicolas Diaz-Magaloni", country:"Mexico", text:["Filmmaker and journalist inspiring social change through media 🎬"], flag:"https://flagcdn.com/w40/mx.png" },
+  { lat:-6.31499, lng:143.9555, name:"Rebecca Ruga Gima", country:"Papua New Guinea", text:["Biologist and conservationist working to tackle water scarcity and protect ecosystems 💧"], flag:"https://flagcdn.com/w40/pg.png" },
+  { lat:10.6918, lng:-61.2225, name:"Seth Aqui", country:"Trinidad & Tobago", text:["Marine researcher promoting sustainable management of Caribbean ocean resources 🐠"], flag:"https://flagcdn.com/w40/tt.png" },
+  { lat:-19.0154, lng:29.1549, name:"Silia Hazel Mapepa", country:"Zimbabwe", text:["Engineering researcher developing sustainable materials and climate-resilient innovations 🏗️"], flag:"https://flagcdn.com/w40/zw.png" },
+  { lat:38.9072, lng:-77.0369, name:"Tiffani Gay", country:"USA", text:["STEM equity advocate encouraging youth innovation in conservation and education 💡"], flag:"https://flagcdn.com/w40/us.png" },
+  { lat:36.7783, lng:-119.4179, name:"Vishal Subramanyan", country:"USA", text:["Filmmaker and conservation storyteller working to protect California’s ecosystems 🌲"], flag:"https://flagcdn.com/w40/us.png" }
+];
+
+const infoText = document.getElementById('infoText');
+
+const globe = Globe()
+  .globeImageUrl('https://unpkg.com/three-globe/example/img/earth-day.jpg')
+  .pointsData(hotspots)
+  .pointLat(d => d.lat)
+  .pointLng(d => d.lng)
+  .pointColor(()=>'orange')
+  .pointAltitude(0.03)
+  .pointRadius(1.5)
+  .pointLabel(d => d.name)
+  .onPointClick(d => {
+    infoText.innerHTML = `
+      <img class="flag" src="${d.flag}">
+      <div class="name">${d.name}</div>
+      <div class="person-text">
+        <div class="country">${d.country}</div>
+        ${d.text.join('<br>')}
+      </div>
+    `;
+  });
+
+globe(document.getElementById('globe'));
+</script>
+
+</body>
+</html>
